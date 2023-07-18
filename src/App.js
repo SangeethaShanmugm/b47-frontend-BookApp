@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { DisplayAllBooks } from "./components/DisplayAllBooks";
+import AddBooks from "./components/AddBooks";
+import { useState } from "react";
 function App() {
+  const [bookData, setBookData] = useState([]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<DisplayAllBooks />}></Route>
+          <Route
+            path="/books/add"
+            element={<AddBooks bookData={bookData} setBookData={setBookData} />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
