@@ -5,24 +5,18 @@ import { API } from "../global";
 import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
-
-function EditBooks({ bookData, setBookData }) {
+export function EditBooks() {
   const { bookid } = useParams();
 
   const [book, setBook] = useState();
   //   console.log("BOOK", book);
 
   useEffect(() => {
-
-    axios.get(`${API}/books/${id}`).then((res) => {
-
     axios.get(`${API}/books/${bookid}`).then((res) => {
-
       console.log(res.data);
       setBook(res.data);
     });
   }, []);
-
   if (book) {
     return <EditBookForm book={book} />;
   } else {
@@ -135,5 +129,3 @@ function EditBookForm({ book }) {
     </>
   );
 }
-
-export default EditBooks;
