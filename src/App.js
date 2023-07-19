@@ -18,7 +18,7 @@ function App() {
             element={<AddBooks bookData={bookData} setBookData={setBookData} />}
           ></Route>
           <Route
-            path="/books/edit/:bookid"
+            path="/books/edit/:id"
             element={
               <EditBooks bookData={bookData} setBookData={setBookData} />
             }

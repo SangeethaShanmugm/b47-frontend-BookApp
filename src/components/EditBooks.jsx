@@ -5,13 +5,13 @@ import { API } from "../global";
 import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
-function EditBooks({ bookData, setBookData }) {
-  const { bookid } = useParams();
+function EditBooks() {
+  const { id } = useParams();
   const [book, setBook] = useState();
   //   console.log("BOOK", book);
 
   useEffect(() => {
-    axios.get(`${API}/books/${bookid}`).then((res) => {
+    axios.get(`${API}/books/${id}`).then((res) => {
       console.log(res.data);
       setBook(res.data);
     });
