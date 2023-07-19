@@ -1,42 +1,63 @@
-import React, { useState } from "react";
-import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import { API } from "../global";
+import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-function AddBooks({ bookData, setBookData }) {
 
-  const [name, setName] = useState("");
-  const [poster, setPoster] = useState("");
-  const [rating, setRating] = useState("");
-  const [summary, setSummary] = useState("");
+function EditBooks({ bookData, setBookData }) {
+  const { bookid } = useParams();
+  const [book, setBook] = useState();
+  //   console.log("BOOK", book);
+
+  useEffect(() => {
+    axios.get(`${API}/books/${bookid}`).then((res) => {
+      console.log(res.data);
+      setBook(res.data);
+    });
+  }, []);
+
+  if (book) {
+    return <EditBookForm book={book} />;
+  } else {
+    return "Loading...";
+  }
+}
+
+function EditBookForm({ book }) {
+  const [name, setName] = useState(book.name);
+  const [poster, setPoster] = useState(book.poster);
+  const [rating, setRating] = useState(book.rating);
+  const [summary, setSummary] = useState(book.summary);
 
   const navigate = useNavigate();
-  
+
   const handleSubmit = () => {
-    const newBook = {
+    const updatedBook = {
       name: name,
       poster: poster,
       rating: rating,
       summary: summary,
     };
-    console.log(newBook);
+    console.log(updatedBook);
 
-    fetch(`${API}/books`, {
-      method: "POST",
-      body: JSON.stringify(newBook),
+    fetch(`${API}/books/${book.id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedBook),
       headers: { "Content-Type": "application/json" },
     })
       .then((data) => data.json())
-      .then((res) => {
-        setBookData(res);
-        console.log(res);
-      })
       .then(() => navigate("/"));
   };
 
   return (
-    <div>
-      <h1>AddBooks</h1>
-      <Button style={{ marginLeft: "75%" }} onClick={() => navigate(-1)}>
+    <>
+      <h1>EditBooks</h1>
+      <Button
+        style={{ marginLeft: "75%" }}
+        color="info"
+        onClick={() => navigate(-1)}
+      >
         BACK
       </Button>
       <Form>
@@ -101,10 +122,12 @@ function AddBooks({ bookData, setBookData }) {
           </Col>
         </FormGroup>
 
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button color="success" onClick={handleSubmit}>
+          Update
+        </Button>
       </Form>
-    </div>
+    </>
   );
 }
 
-export default AddBooks;
+export default EditBooks;

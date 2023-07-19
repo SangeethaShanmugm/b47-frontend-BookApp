@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -8,7 +9,10 @@ import {
   Button,
 } from "reactstrap";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+
 function BookCard({ value, handleDelete }) {
+  const navigate = useNavigate();
+
   return (
     <div className="main-card">
       <Card
@@ -38,7 +42,10 @@ function BookCard({ value, handleDelete }) {
             <Button color="danger">
               <AiFillDelete onClick={() => handleDelete(value.id)} />
             </Button>
-            <Button color="success">
+            <Button
+              color="success"
+              onClick={() => navigate(`/books/edit/${value.id}`)}
+            >
               <AiFillEdit />
             </Button>
           </div>
